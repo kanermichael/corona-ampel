@@ -23,12 +23,14 @@ margin-top: 50px;
 
 export default function Home({trafficLightData}) {
 
-  const [data, setData] = React.useState([...trafficLightData[0].Warnstufen])
+  const trafficData = [...trafficLightData[0].Warnstufen]
+
+  const [data, setData] = React.useState(trafficData)
   const [searchTerm, setSearchTerm ] = React.useState('')
  
   React.useEffect(()=>{
 
-    const filteredItems = [...trafficLightData[0].Warnstufen].filter( 
+    const filteredItems = trafficData.filter( 
       dataItem => dataItem.Name.toLowerCase().includes(searchTerm.toLowerCase())
     )
     setData(filteredItems)
