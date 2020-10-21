@@ -12,12 +12,14 @@ flex-wrap: wrap;
 max-width: 1200px;
 margin: 0 auto;
 list-style: none;
+padding: 0;
+justify-content: space-between;
 `;
 
 const Header = styled.section`
 text-align: center;
 font-family: 'Rubik', sans-serif;
-margin-top: 50px;
+margin: 50px auto;
 `;
 
 
@@ -27,22 +29,41 @@ export default function Home({trafficLightData}) {
 
   const [data, setData] = React.useState(trafficData)
   const [searchTerm, setSearchTerm ] = React.useState('')
- 
-  React.useEffect(()=>{
+  const [filter, setFilter] = React.useState(null)
+  const [searchable, setSearchable] = React.useState(false)
 
-    const filteredItems = trafficData.filter( 
-      dataItem => dataItem.Name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    setData(filteredItems)
-  }, [searchTerm])
+  React.useEffect(()=>{
+    
+    if(filter){
+      const filteredItems = trafficData.filter( 
+        dataItem => dataItem.Warnstufe.includes(filter)
+      )
+      setData(filteredItems)
+      setSearchable(true)
+
+    }else{
+      setSearchable(false)
+      const searchItems = trafficData.filter( 
+        dataItem => dataItem.Name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      setData(searchItems)
+    }
+   
+  }, [searchTerm, filter])
  
-  
+  function handleFilter(e){
+
+    e ? setFilter(e.value) : setFilter(null)
+   
+   
+  }
   return (
 
   <React.Fragment> 
+
   <Header>
-  <h1>COVID-19 Ampel</h1>
-  <Search data={data} handleChange={e => setSearchTerm(e.target.value)} searchTerm={searchTerm}/>
+    <h1>COVID-19 Ampel</h1>
+    <Search data={data} handleChange={e => setSearchTerm(e.target.value)} searchTerm={searchTerm} filter={handleFilter} isDisabled={searchable}/>
   </Header>
 
   <Wrapper>
@@ -50,9 +71,11 @@ export default function Home({trafficLightData}) {
          <Item key={i} {...entryData}/>
        ))}
    </Wrapper>
+
   </React.Fragment>   
   )
 }
+
 
 
 
@@ -68,5 +91,3 @@ export async function getStaticProps() {
     }
 }
   
-
-

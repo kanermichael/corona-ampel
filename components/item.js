@@ -1,22 +1,19 @@
  import styled from 'styled-components';
  import VanillaTilt from 'vanilla-tilt'
 
- const handleColorType = color => {
-    switch (color) {
-      case "1":
-        return "#7ea04d";
-      case "2":
-        return "#ffe05d";
-      case "3":
-        return "#ff9642";
-      case "4":
-        return "#ea5455";
-      default:
-        return "#fff";
-    }
-  };
-  
+ const handleWithHashMap = color => {
+    const colors = {
+    1: "#7ea04d",
+    2: "#ffe05d",
+    3: "#ff9642",
+    4: "#ea5455",
+    base:"fff" 
+ }
+ 
+ return colors[color] || colors.base;
 
+}
+ 
  const Region = styled.h2`
  font-size: 1em;
  font-weight: 300;
@@ -28,14 +25,16 @@ font-weight: 600;
 `;
 
 const Card = styled.li`
-background: ${ ({color}) => handleColorType(color)};
+background: ${ ({color}) => handleWithHashMap(color)};
 box-shadow: 10px 10px 30px -20px rgba(0,0,0,0.75);
 border-radius: 10px;
 margin-bottom: 20px;
-flex:1;
-padding: 20px;
-margin: 20px;
-min-width: calc(25% - 40px);
+flex: 1 1 23%;
+height: auto;
+margin: 4px;
+padding: 20px 0;
+width: auto;
+min-width: 250px;
 text-align: center;
 color: #212121;
 `;
